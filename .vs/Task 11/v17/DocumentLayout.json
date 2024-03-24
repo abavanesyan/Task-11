@@ -1,0 +1,56 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\User\\Desktop\\UFAR\\2nd year\\C#\\Task 11\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{D72EC057-1802-4AA4-859C-9A3D4BDB9CE2}|ttt\\Task 11.csproj|c:\\users\\user\\desktop\\ufar\\2nd year\\c#\\task 11\\ttt\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D72EC057-1802-4AA4-859C-9A3D4BDB9CE2}|ttt\\Task 11.csproj|solutionrelative:ttt\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D72EC057-1802-4AA4-859C-9A3D4BDB9CE2}|ttt\\Task 11.csproj|C:\\Users\\User\\Desktop\\UFAR\\2nd year\\C#\\Task 11\\ttt\\MainWindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{D72EC057-1802-4AA4-859C-9A3D4BDB9CE2}|ttt\\Task 11.csproj|solutionrelative:ttt\\MainWindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{f5cd1b51-c771-5648-966f-646d419b1e7c}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\UFAR\\2nd year\\C#\\Task 11\\ttt\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "ttt\\MainWindow.xaml",
+              "ToolTip": "C:\\Users\\User\\Desktop\\UFAR\\2nd year\\C#\\Task 11\\ttt\\MainWindow.xaml",
+              "RelativeToolTip": "ttt\\MainWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-03-23T20:30:26.195Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\UFAR\\2nd year\\C#\\Task 11\\ttt\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "ttt\\MainWindow.xaml.cs",
+              "ToolTip": "C:\\Users\\User\\Desktop\\UFAR\\2nd year\\C#\\Task 11\\ttt\\MainWindow.xaml.cs",
+              "RelativeToolTip": "ttt\\MainWindow.xaml.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAAbAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-23T20:30:24.056Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

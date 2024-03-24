@@ -1,0 +1,14 @@
+C:\Users\User\Desktop\UFAR\2nd year\C#\ttt\ttt\bin\Debug\ttt.exe.config
+C:\Users\User\Desktop\UFAR\2nd year\C#\ttt\ttt\bin\Debug\ttt.exe
+C:\Users\User\Desktop\UFAR\2nd year\C#\ttt\ttt\bin\Debug\ttt.pdb
+C:\Users\User\Desktop\UFAR\2nd year\C#\ttt\ttt\obj\Debug\ttt.csproj.AssemblyReference.cache
+C:\Users\User\Desktop\UFAR\2nd year\C#\ttt\ttt\obj\Debug\MainWindow.baml
+C:\Users\User\Desktop\UFAR\2nd year\C#\ttt\ttt\obj\Debug\MainWindow.g.cs
+C:\Users\User\Desktop\UFAR\2nd year\C#\ttt\ttt\obj\Debug\App.g.cs
+C:\Users\User\Desktop\UFAR\2nd year\C#\ttt\ttt\obj\Debug\ttt_MarkupCompile.cache
+C:\Users\User\Desktop\UFAR\2nd year\C#\ttt\ttt\obj\Debug\ttt.g.resources
+C:\Users\User\Desktop\UFAR\2nd year\C#\ttt\ttt\obj\Debug\ttt.Properties.Resources.resources
+C:\Users\User\Desktop\UFAR\2nd year\C#\ttt\ttt\obj\Debug\ttt.csproj.GenerateResource.cache
+C:\Users\User\Desktop\UFAR\2nd year\C#\ttt\ttt\obj\Debug\ttt.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\UFAR\2nd year\C#\ttt\ttt\obj\Debug\ttt.exe
+C:\Users\User\Desktop\UFAR\2nd year\C#\ttt\ttt\obj\Debug\ttt.pdb
