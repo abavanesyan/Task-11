@@ -19,98 +19,6 @@ using System.Windows.Shapes;
 
 namespace ttt
 {
-    [SuppressUnmanagedCodeSecurity]
-    public static class ConsoleManager
-    {
-        private const string Kernel32_DllName = "kernel32.dll";
-
-        [DllImport(Kernel32_DllName)]
-        private static extern bool AllocConsole();
-
-        [DllImport(Kernel32_DllName)]
-        private static extern bool FreeConsole();
-
-        [DllImport(Kernel32_DllName)]
-        private static extern IntPtr GetConsoleWindow();
-
-        [DllImport(Kernel32_DllName)]
-        private static extern int GetConsoleOutputCP();
-
-        public static bool HasConsole
-        {
-            get { return GetConsoleWindow() != IntPtr.Zero; }
-        }
-
-        /// <summary>
-        /// Creates a new console instance if the process is not attached to a console already.
-        /// </summary>
-        public static void Show()
-        {
-            //#if DEBUG
-            if (!HasConsole)
-            {
-                AllocConsole();
-                InvalidateOutAndError();
-            }
-            //#endif
-        }
-
-        /// <summary>
-        /// If the process has a console attached to it, it will be detached and no longer visible. Writing to the System.Console is still possible, but no output will be shown.
-        /// </summary>
-        public static void Hide()
-        {
-            //#if DEBUG
-            if (HasConsole)
-            {
-                SetOutAndErrorNull();
-                FreeConsole();
-            }
-            //#endif
-        }
-
-        public static void Toggle()
-        {
-            if (HasConsole)
-            {
-                Hide();
-            }
-            else
-            {
-                Show();
-            }
-        }
-
-        static void InvalidateOutAndError()
-        {
-            Type type = typeof(System.Console);
-
-            System.Reflection.FieldInfo _out = type.GetField("_out",
-                System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
-
-            System.Reflection.FieldInfo _error = type.GetField("_error",
-                System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
-
-            System.Reflection.MethodInfo _InitializeStdOutError = type.GetMethod("InitializeStdOutError",
-                System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
-
-            Debug.Assert(_out != null);
-            Debug.Assert(_error != null);
-
-            Debug.Assert(_InitializeStdOutError != null);
-
-            _out.SetValue(null, null);
-            _error.SetValue(null, null);
-
-            _InitializeStdOutError.Invoke(null, new object[] { true });
-        }
-
-        static void SetOutAndErrorNull()
-        {
-            Console.SetOut(TextWriter.Null);
-            Console.SetError(TextWriter.Null);
-        }
-    }
     public partial class MainWindow : Window
     {
         public static int[,] board = { 
@@ -124,12 +32,13 @@ namespace ttt
                                 { 0, 0, 0, 0, 1000, 0, 0, 0 }  
         };
 
-        bool BnFigureClicked, WbFigureClicked, WhiteP = false, WhiteK = false;
+        bool WhiteP = false, WhiteK = false;
         double DeltaX, DeltaY;
         int Pindex1 = 6, Pindex2 = 4, Kindex1 = 7, Kindex2 = 4, top = 0, left = 0;
-        int BKlocT = 0, BKlocL = 6, BBlocT = 0, BBlocL = 5, BRlocT = 0, BRlocL = 7;
+        int BKlocT = 0, BKlocL = 6, BBlocT = 0, BBlocL = 5, BRlocT = 0, BRlocL = 7, BKinglocT = 0, BKinglocL = 4;
         int BKlocTtemp = 0, BKlocLtemp = 6, BBlocTtemp = 0, BBlocLtemp = 5, BRlocTtemp = 0, BRlocLtemp = 7;
-        bool BishopCheker = false, RookChecker = false;
+        bool BishopCheker = false, RookChecker = false, BishopChekersec = false, RookCheckersec = false, BishopChekertrd = false, RookCheckertrd = false, KingChecker;
+        bool RandMoveChecker = false;
         public MainWindow()
         {
             InitializeComponent();
@@ -137,12 +46,6 @@ namespace ttt
 
         void Window_MouseMove(object sender, MouseEventArgs e)
         {
-            if (BnFigureClicked)
-                MyBnFigure.Margin = new Thickness(e.GetPosition(this).X - DeltaX,
-                e.GetPosition(this).Y - DeltaY, 0, 0);
-            if (WbFigureClicked)
-                MyWbFigure.Margin = new Thickness(e.GetPosition(this).X - DeltaX,
-                e.GetPosition(this).Y - DeltaY, 0, 0);
             if (WhiteP)
                 WhitePawn.Margin = new Thickness(e.GetPosition(this).X - DeltaX,
                 e.GetPosition(this).Y - DeltaY, 0, 0);
@@ -150,47 +53,12 @@ namespace ttt
                 WhiteKing.Margin = new Thickness(e.GetPosition(this).X - DeltaX,
                 e.GetPosition(this).Y - DeltaY, 0, 0);
         }
-        void MyBnFigure_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ButtonState == e.LeftButton)
-            {
-                StackPanel.SetZIndex(MyBnFigure, 1);
-                StackPanel.SetZIndex(MyWbFigure, 0);
-                BnFigureClicked = true;
-                DeltaX = e.GetPosition(this).X - MyBnFigure.Margin.Left;
-                DeltaY = e.GetPosition(this).Y - MyBnFigure.Margin.Top;
-            }
-        }
-        void MyBnFigure_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            BnFigureClicked = false;
-            MyBnFigure.Margin = new Thickness((int)(MyBnFigure.Margin.Left + 25) / 50 * 50,(int)(MyBnFigure.Margin.Top + 25) / 50 * 50, 0, 0);
-        }
-        void MyWbFigure_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ButtonState == e.LeftButton)
-            {
-                StackPanel.SetZIndex(MyWbFigure, 1);
-                StackPanel.SetZIndex(MyBnFigure, 0);
-                WbFigureClicked = true;
-                DeltaX = e.GetPosition(this).X - MyWbFigure.Margin.Left;
-                DeltaY = e.GetPosition(this).Y - MyWbFigure.Margin.Top;
-            }
-        }
-        void MyWbFigure_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            WbFigureClicked = false;
-            MyWbFigure.Margin = new Thickness((int)(MyWbFigure.Margin.Left + 25) / 50 * 50,
-            (int)(MyWbFigure.Margin.Top + 25) / 50 * 50, 0, 0);
-        }
 
         void WhitePawn_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ButtonState == e.LeftButton)
             {
                 StackPanel.SetZIndex(WhitePawn, 1);
-                StackPanel.SetZIndex(MyWbFigure, 0);
-                StackPanel.SetZIndex(MyBnFigure, 0);
                 StackPanel.SetZIndex(WhiteKing, 0);
                 if (!WhiteP)
                 {
@@ -213,6 +81,7 @@ namespace ttt
                 board[Pindex1, Pindex2] = 0;
                 Pindex1 = (int)(WhitePawn.Margin.Top + 25) / 50;
                 Pindex2 = (int)(WhitePawn.Margin.Left + 25) / 50;
+                BlackMoves();
             } else
             {
                 WhitePawn.Margin = new Thickness(left, top, 0, 0);
@@ -224,8 +93,6 @@ namespace ttt
             if (e.ButtonState == e.LeftButton)
             {
                 StackPanel.SetZIndex(WhiteKing, 1);
-                StackPanel.SetZIndex(MyWbFigure, 0);
-                StackPanel.SetZIndex(MyBnFigure, 0);
                 StackPanel.SetZIndex(WhitePawn, 0);
                 if (!WhiteK)
                 {
@@ -273,21 +140,84 @@ namespace ttt
                     }
                     else if (Math.Abs(BBlocT - i) == Math.Abs(BBlocL - j) && board[i, j] == 1000)
                     {
-                        board[BBlocT, BBlocL] = 0;
-                        BBlocT = i;
-                        BBlocL = j;
-                        board[BBlocT, BBlocL] = -33;
-                        MyWbFigure.Margin = new Thickness(j * 50, i * 50, 0, 0);
-                        return;
+                        BishopChekersec = false;
+                        for (int l = 1; l < Math.Abs(i - BBlocT); l++)
+                        {
+                            if (i > BBlocT && j < BBlocL && board[BBlocT + l, BBlocL - l] != 0)
+                            {
+                                BishopChekersec = true;
+                                break;
+                            }
+                            if (i > BBlocT && j > BBlocL && board[BBlocT + l, BBlocL + l] != 0)
+                            {
+                                BishopChekersec = true;
+                                break;
+                            }
+                            if (i < BBlocT && j < BBlocL && board[BBlocT - l, BBlocL - l] != 0)
+                            {
+                                BishopChekersec = true;
+                                break;
+                            }
+                            if (i < BBlocT && j > BBlocL && board[BBlocT - l, BBlocL + l] != 0)
+                            {
+                                BishopChekersec = true;
+                                break;
+                            }
+                        }
+                        if (!BishopChekersec)
+                        {
+                            board[BBlocT, BBlocL] = 0;
+                            BBlocT = i;
+                            BBlocL = j;
+                            board[BBlocT, BBlocL] = -33;
+                            MyWbFigure.Margin = new Thickness(j * 50, i * 50, 0, 0);
+                            return;
+                        }
                     }
                     else if ((j == BRlocL || i == BRlocT) && board[i, j] == 1000)
                     {
-                        board[BRlocT, BRlocL] = 0;
-                        BRlocT = i;
-                        BRlocL = j;
-                        board[BRlocT, BRlocL] = -50;
-                        BlackRook.Margin = new Thickness(j * 50, i * 50, 0, 0);
-                        return;
+                        RookCheckersec = false;
+                        if (j == BRlocL)
+                        {
+                            for (int l = 1; l < Math.Abs(i - BRlocT); l++)
+                            {
+                                if (i > BRlocT && board[BRlocT + l, j] != 0)
+                                {
+                                    RookCheckersec = true;
+                                    break;
+                                }
+                                if (i < BRlocT && board[BRlocT - l, j] != 0)
+                                {
+                                    RookCheckersec = true;
+                                    break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            for (int l = 1; l < Math.Abs(j - BRlocL); l++)
+                            {
+                                if (j > BRlocL && board[i, BRlocL + l] != 0)
+                                {
+                                    RookCheckersec = true;
+                                    break;
+                                }
+                                if (j < BRlocL && board[i, BRlocL - l] != 0)
+                                {
+                                    RookCheckersec = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (!RookCheckersec)
+                        {
+                            board[BRlocT, BRlocL] = 0;
+                            BRlocT = i;
+                            BRlocL = j;
+                            board[BRlocT, BRlocL] = -50;
+                            BlackRook.Margin = new Thickness(j * 50, i * 50, 0, 0);
+                            return;
+                        }
                     }
                 }
             }
@@ -388,6 +318,7 @@ namespace ttt
                     }
                 }
             }
+            RandomMove();
         }
 
         int Knight(int BKlocTtemp, int BKlocLtemp)
@@ -504,6 +435,138 @@ namespace ttt
                 }
             }
             return 0;
+        }
+
+        void RandomMove()
+        {
+            RandMoveChecker = false;
+            Random rnd = new Random();
+            while (!RandMoveChecker)
+            {
+                int rndRow = rnd.Next(0, 8);
+                int rndColumn = rnd.Next(0, 8);
+
+                if (((Math.Abs(BKlocT - rndRow) == 2 && Math.Abs(BKlocL - rndColumn) == 1) || (Math.Abs(BKlocT - rndRow) == 1 && Math.Abs(BKlocL - rndColumn) == 2)) && board[rndRow, rndColumn] >= 0)
+                {
+                    board[BKlocT, BKlocL] = 0;
+                    BKlocT = rndRow;
+                    BKlocL = rndColumn;
+                    board[BKlocT, BKlocL] = -30;
+                    MyBnFigure.Margin = new Thickness(rndColumn * 50, rndRow * 50, 0, 0);
+                    RandMoveChecker = true;
+                    return;
+                }
+                else if (Math.Abs(BBlocT - rndRow) == Math.Abs(BBlocL - rndColumn) && board[rndRow, rndColumn] >= 0)
+                {
+                    BishopChekertrd = false;
+                    for (int l = 1; l < Math.Abs(rndRow - BBlocT); l++)
+                    {
+                        if (rndRow > BBlocT && rndColumn < BBlocL && board[BBlocT + l, BBlocL - l] != 0)
+                        {
+                            BishopChekertrd = true;
+                            break;
+                        }
+                        if (rndRow > BBlocT && rndColumn > BBlocL && board[BBlocT + l, BBlocL + l] != 0)
+                        {
+                            BishopChekertrd = true;
+                            break;
+                        }
+                        if (rndRow < BBlocT && rndColumn < BBlocL && board[BBlocT - l, BBlocL - l] != 0)
+                        {
+                            BishopChekertrd = true;
+                            break;
+                        }
+                        if (rndRow < BBlocT && rndColumn > BBlocL && board[BBlocT - l, BBlocL + l] != 0)
+                        {
+                            BishopChekertrd = true;
+                            break;
+                        }
+                    }
+                    if (!BishopChekertrd)
+                    {
+                        board[BBlocT, BBlocL] = 0;
+                        BBlocT = rndRow;
+                        BBlocL = rndColumn;
+                        board[BBlocT, BBlocL] = -33;
+                        MyWbFigure.Margin = new Thickness(rndColumn * 50, rndRow * 50, 0, 0);
+                        RandMoveChecker = true;
+                        return;
+                    }
+                }
+                else if ((rndColumn == BRlocL || rndRow == BRlocT) && board[rndRow, rndColumn] >= 0)
+                {
+                    RookCheckertrd = false;
+                    if (rndColumn == BRlocL)
+                    {
+                        for (int l = 1; l < Math.Abs(rndRow - BRlocT); l++)
+                        {
+                            if (rndRow > BRlocT && board[BRlocT + l, rndColumn] != 0)
+                            {
+                                RookCheckertrd = true;
+                                break;
+                            }
+                            if (rndRow < BRlocT && board[BRlocT - l, rndColumn] != 0)
+                            {
+                                RookCheckertrd = true;
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        for (int l = 1; l < Math.Abs(rndColumn - BRlocL); l++)
+                        {
+                            if (rndColumn > BRlocL && board[rndRow, BRlocL + l] != 0)
+                            {
+                                RookCheckertrd = true;
+                                break;
+                            }
+                            if (rndColumn < BRlocL && board[rndRow, BRlocL - l] != 0)
+                            {
+                                RookCheckertrd = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!RookCheckertrd)
+                    {
+                        board[BRlocT, BRlocL] = 0;
+                        BRlocT = rndRow;
+                        BRlocL = rndColumn;
+                        board[BRlocT, BRlocL] = -50;
+                        BlackRook.Margin = new Thickness(rndColumn * 50, rndRow * 50, 0, 0);
+                        RandMoveChecker = true;
+                        return;
+                    }
+                }
+                else if (((Math.Abs(rndColumn - BKinglocL) == 1 && Math.Abs(rndRow - BKinglocT) == 1) || (Math.Abs(rndColumn - BKinglocL) == 0 && Math.Abs(rndRow - BKinglocT) == 1) || (Math.Abs(rndColumn - BKinglocL) == 1 && Math.Abs(rndRow - BKinglocT) == 0)) && board[rndRow, rndColumn] >= 0)
+                {
+                    KingChecker = false;
+                    for (int i = rndRow - 1; i < rndRow + 2; i++) 
+                    {
+                        for(int j = rndColumn - 1; j < rndColumn + 2; j++)
+                        {
+                            if (i > -1 && i < 8 && j > -1 && j < 8)
+                            {
+                                if (board[i, j] == -1000)
+                                {
+                                    KingChecker = true;
+                                }
+                            }
+                        }
+                    }
+                    if (!KingChecker && board[rndRow + 1, rndColumn + 1] != 10 && board[rndRow + 1, rndColumn - 1] != 10)
+                    {
+                        board[BKinglocT, BKinglocL] = 0;
+                        BKinglocT = rndRow;
+                        BKinglocL = rndColumn;
+                        board[BKinglocT, BKinglocL] = -50;
+                        BlackKing.Margin = new Thickness(rndColumn * 50, rndRow * 50, 0, 0);
+                        RandMoveChecker = true;
+                        return;
+                    }
+                }
+            }
         }
     }
 }

@@ -5,14 +5,13 @@
     <Grid>
         <Image Name="MyBoard" Source="board.jpg" Stretch="Fill"/>
         <Image Name="MyBnFigure" Source="bn.gif" Margin="300,0,0,0" VerticalAlignment="Top"
-        HorizontalAlignment="Left" Width="50" Height="50"
-        MouseDown="MyBnFigure_MouseDown" MouseUp="MyBnFigure_MouseUp" Cursor="Hand"/>
+        HorizontalAlignment="Left" Width="50" Height="50"/>
         <Image Name="MyWbFigure" Source="bb.gif" Margin="250,0,0,0" VerticalAlignment="Top"
-HorizontalAlignment="Left" Width="50" Height="50" RenderTransformOrigin="-0.063,0.547" MouseDown="MyWbFigure_MouseDown" MouseUp="MyWbFigure_MouseUp" Cursor="Hand" />
+HorizontalAlignment="Left" Width="50" Height="50" RenderTransformOrigin="-0.063,0.547"/>
         <Image Name="BlackRook" Source="br.gif" Margin="350,0,0,0" VerticalAlignment="Top"
 HorizontalAlignment="Left" Width="50" Height="50"/>
         <Image Name="WhitePawn" Source="wp.gif" Margin="200,300,0,0" VerticalAlignment="Top"
-HorizontalAlignment="Left" Width="50" Height="50"  MouseDown="WhitePawn_MouseDown" MouseUp="WhitePawn_MouseUp" Cursor="Hand" />
+HorizontalAlignment="Left" Width="50" Height="50"  MouseDown="WhitePawn_MouseDown" MouseUp="WhitePawn_MouseUp" Cursor="Hand"/>
         <Image Name="WhiteKing" Source="wk.gif" Margin="200,350,0,0" VerticalAlignment="Top"
 HorizontalAlignment="Left" Width="50" Height="50" MouseDown="WhiteKing_MouseDown" MouseUp="WhiteKing_MouseUp" Cursor="Hand"/>
         <Image Name="BlackKing" Source="bk.gif" Margin="200,0,0,0" VerticalAlignment="Top"
